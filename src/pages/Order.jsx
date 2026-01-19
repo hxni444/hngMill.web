@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import axiosClient from '../api/axiosClient';
 import turmericImg from '../assets/Turmeric.jpg';
 import corianderImg from '../assets/Coriander.jpg';
@@ -22,6 +23,16 @@ const Order = () => {
     }, []);
 
     const addToCart = (product, weight) => {
+        // Calculate current total weight for this product
+        const currentWeightInCart = cart.reduce((total, item) => {
+            return item.id === product.id ? total + (item.weight * item.qty) : total;
+        }, 0);
+
+        if (currentWeightInCart + weight > 10) {
+            alert("ordering is limited to 10kg per item\nplease visit the mill for large ordering");
+            return;
+        }
+
         const existing = cart.find(item => item.id === product.id && item.weight === weight);
         if (existing) {
             setCart(cart.map(item =>
@@ -64,6 +75,10 @@ const Order = () => {
 
     return (
         <div className="container" style={{ padding: '2rem 0' }}>
+            <Helmet>
+                <title>Order Online - H&G Flour Mill | Buy Spices & Flour</title>
+                <meta name="description" content="Place your order for fresh, authentic spices and flour from H&G Flour Mill. Turmeric, Chilli, Coriander, Wheat and more available." />
+            </Helmet>
             <h1 style={{ textAlign: 'center' }}>Place Your Order</h1>
             <p style={{ textAlign: 'center', color: '#666', fontSize: '0.9rem', marginBottom: '2rem', fontStyle: 'italic' }}>
                 * Images shown are for promotional purposes only. Actual product appearance may vary.

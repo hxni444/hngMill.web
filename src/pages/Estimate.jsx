@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 
 const Estimate = () => {
@@ -35,6 +36,10 @@ const Estimate = () => {
 
     return (
         <div className="container" style={{ padding: '2rem 0', maxWidth: '800px' }}>
+            <Helmet>
+                <title>Get Estimate - H&G Flour Mill | Grinding Rates</title>
+                <meta name="description" content="Calculate your milling estimate online. Check current grinding rates for different grains at H&G Flour Mill." />
+            </Helmet>
             <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>Milling Rate Estimate</h1>
 
             <div className="glass-panel" style={{ padding: '2rem' }}>

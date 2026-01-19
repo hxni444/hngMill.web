@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
     return (
         <div style={{ padding: '2rem 0' }}>
+            <Helmet>
+                <title>Home - H&G Flour Mill | Fresh Spices & Flour</title>
+                <meta name="description" content="Welcome to H&G Flour Mill. Purest grains and finest flour, fresh from the mill. Order turmeric, chilli, coriander and more online." />
+            </Helmet>
             {/* Hero Section */}
             <section style={{
                 textAlign: 'center',
