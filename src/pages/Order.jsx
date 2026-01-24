@@ -23,13 +23,26 @@ const Order = () => {
     }, []);
 
     const addToCart = (product, weight) => {
+        // Determine max limit for this product
+        const name = product.name.toLowerCase();
+        let limit = parseFloat(import.meta.env.VITE_LIMIT_DEFAULT) || 10;
+
+        if (name.includes('turmeric')) limit = parseFloat(import.meta.env.VITE_LIMIT_TURMERIC) || 10;
+        else if (name.includes('kashmiri')) limit = parseFloat(import.meta.env.VITE_LIMIT_KASHMIRI) || 10;
+        else if (name.includes('chilli')) limit = parseFloat(import.meta.env.VITE_LIMIT_CHILLI) || 10;
+        else if (name.includes('coriander') && name.includes('roasted')) limit = parseFloat(import.meta.env.VITE_LIMIT_CORIANDER_ROASTED) || 10;
+        else if (name.includes('coriander')) limit = parseFloat(import.meta.env.VITE_LIMIT_CORIANDER) || 10;
+        else if (name.includes('wheat')) limit = parseFloat(import.meta.env.VITE_LIMIT_WHEAT) || 10;
+        else if (name.includes('putt')) limit = parseFloat(import.meta.env.VITE_LIMIT_RICE_PUTT) || 10;
+        else if (name.includes('pathil')) limit = parseFloat(import.meta.env.VITE_LIMIT_RICE_PATHIL) || 10;
+
         // Calculate current total weight for this product
         const currentWeightInCart = cart.reduce((total, item) => {
             return item.id === product.id ? total + (item.weight * item.qty) : total;
         }, 0);
 
-        if (currentWeightInCart + weight > 10) {
-            alert("ordering is limited to 10kg per item\nplease visit the mill for large ordering");
+        if (currentWeightInCart + weight > limit) {
+            alert(`Ordering is limited to ${limit}kg per item for ${product.name}\nPlease visit the mill for large ordering`);
             return;
         }
 
@@ -67,7 +80,7 @@ const Order = () => {
         message += `\n*Total Estimate: ₹${total.toFixed(0)}*`;
 
         // Check if mobile or web
-        const url = `https://wa.me/919447131773?text=${encodeURIComponent(message)}`;
+        const url = `https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');
     };
 

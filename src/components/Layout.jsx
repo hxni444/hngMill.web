@@ -18,7 +18,7 @@ const Layout = () => {
             }}>
                 <p>© 2026 H&G Flour Mill. Premium Quality Food Products.</p>
                 <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#64748b' }}>
-                    Contact: +91 9447131773
+                    Contact: {import.meta.env.VITE_FOOTER_PHONE_NUMBER}
                 </p>
             </footer>
         </div>
