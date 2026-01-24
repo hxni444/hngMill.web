@@ -1,0 +1,25 @@
+.layout-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.main-content {
+    flex: 1;
+    padding-bottom: 2rem;
+}
+
+.site-footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--color-white);
+    color: var(--color-dark);
+    border-top: 1px solid #e2e8f0;
+}
+
+.footer-contact {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #64748b;
+}

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 
+import './Estimate.css';
+
 const Estimate = () => {
     const [rates, setRates] = useState([]);
     const [inputs, setInputs] = useState({});
@@ -35,19 +37,19 @@ const Estimate = () => {
     if (loading) return <div className="container" style={{ padding: '2rem' }}>Loading rates...</div>;
 
     return (
-        <div className="container" style={{ padding: '2rem 0', maxWidth: '800px' }}>
+        <div className="container estimate-container">
             <Helmet>
                 <title>Get Estimate - H&G Flour Mill | Grinding Rates</title>
                 <meta name="description" content="Calculate your milling estimate online. Check current grinding rates for different grains at H&G Flour Mill." />
             </Helmet>
-            <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>Milling Rate Estimate</h1>
+            <h1 className="estimate-title">Milling Rate Estimate</h1>
 
-            <div className="glass-panel" style={{ padding: '2rem' }}>
-                <p style={{ marginBottom: '2rem', textAlign: 'center', color: '#666' }}>
+            <div className="glass-panel estimate-panel">
+                <p className="estimate-instruction">
                     Enter the quantity (in kg) for each item to see the estimated milling charge.
                 </p>
 
-                <div style={{ display: 'grid', gap: '1.5rem' }}>
+                <div className="input-grid">
                     {rates.map(item => (
                         <InputRow
                             key={item.id}
@@ -60,10 +62,10 @@ const Estimate = () => {
                     ))}
                 </div>
 
-                <div style={{ marginTop: '2rem', padding: '1rem', background: '#ecfdf5', borderRadius: '12px', textAlign: 'center' }}>
+                <div className="total-estimate-box">
                     <h3>Total Estimate: ₹{calculateTotal().toFixed(0)}</h3>
                 </div>
-                <p style={{ color: '#6666', marginBottom: '2rem', textAlign: 'center' }}>
+                <p className="estimate-disclaimer">
                     Actual milling charge may vary based on the quality of the grain and the milling process.
                 </p>
             </div>
@@ -72,19 +74,14 @@ const Estimate = () => {
 };
 
 const InputRow = ({ label, rate, id, inputs, setInputs }) => (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <label style={{ fontWeight: '600', flex: 1 }}>{label} <span style={{ fontSize: '0.8rem', color: '#999' }}>(₹{rate}/kg)</span></label>
+    <div className="input-row">
+        <label className="input-label">{label} <span className="price-hint">(₹{rate}/kg)</span></label>
         <input
             type="number"
             placeholder="0 kg"
             value={inputs[id] || ''}
             onChange={(e) => setInputs({ ...inputs, [id]: e.target.value })}
-            style={{
-                padding: '0.8rem',
-                borderRadius: '8px',
-                border: '1px solid #ddd',
-                width: '120px'
-            }}
+            className="input-field"
         />
     </div>
 );

@@ -1,0 +1,61 @@
+.estimate-container {
+    padding: 2rem 0;
+    max-width: 800px;
+}
+
+.estimate-title {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.estimate-panel {
+    padding: 2rem;
+}
+
+.estimate-instruction {
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #666;
+}
+
+.input-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.input-label {
+    font-weight: 600;
+    flex: 1;
+}
+
+.price-hint {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.input-field {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 120px;
+}
+
+.total-estimate-box {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #ecfdf5;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.estimate-disclaimer {
+    color: #666;
+    margin-bottom: 2rem;
+    text-align: center;
+}

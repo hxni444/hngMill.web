@@ -1,0 +1,45 @@
+.navbar-panel {
+    position: sticky;
+    top: 1rem;
+    z-index: 100;
+    margin: 0 1rem;
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.brand-link {
+    text-decoration: none;
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    color: var(--color-dark);
+    margin: 0;
+}
+
+.brand-highlight {
+    color: var(--color-primary);
+}
+
+.nav-links-container {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--color-dark);
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--color-primary);
+}
