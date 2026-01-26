@@ -12,7 +12,7 @@ const About = () => {
 
             <div className="about-header">
                 <h1>The H&G Standard</h1>
-                <p className="subtitle">Purity in Every Grain, Perfection in Every Pack.</p>
+                <p className="subtitle">Purity in Every Gram of Spices & Grains</p>
             </div>
 
             <div className="process-grid">
@@ -23,7 +23,7 @@ const About = () => {
                     <p>
                         Our journey begins with absolute purification. We believe that premium quality starts with a clean slate.
                         Every batch of raw grain undergoes a rigorous deep-cleansing process to remove every trace of dust,
-                        soil, and impurities. We don't just rinse; we purify, ensuring that the foundation of your flour
+                        soil, and impurities. We don't just rinse; we purify, ensuring that the foundation of our  Spices & Grains
                         is nothing but pure, unadulterated goodness.
                     </p>
                 </div>
@@ -33,10 +33,10 @@ const About = () => {
                     <h2>Preservation</h2>
                     <h3 className="step-title">The Drying Process</h3>
                     <p>
-                        Once purified, the grains enter our preservation stage. To ensure longevity and prevent any spoilage,
-                        we meticulously remove all moisture. utilizing both traditional sun-drying methods and state-of-the-art
+                        Once purified, the  Spices & Grains enter our preservation stage. To ensure longevity and prevent any spoilage,
+                        we meticulously remove all moisture. utilizing both traditional sun-drying methods and in-house build
                         machine drying where consistent climate control is needed. This step locks in the natural nutrients
-                        and ensures the grain remains fresh and ready for the mill.
+                        and ensures the  Spices & Grains remains fresh and ready for the mill.
                     </p>
                 </div>
 
@@ -46,9 +46,9 @@ const About = () => {
                     <h3 className="step-title">The Grinding Process</h3>
                     <p>
                         The finale is a symphony of precision. Our grinding process is where potential becomes product.
-                        Using advanced milling technology, we pulverize the dried grains into a fine, consistent powder.
+                        Using advanced milling technology, we pulverize the dried  Spices & Grains into a fine, consistent powder.
                         This isn't just crushing; it's extracting the very essence, robust flavor, and vital nutrition
-                        of the grain, delivering a product that truly elevates your cooking.
+                        of the  Spices & Grains, delivering a product that truly elevates your cooking.
                     </p>
                 </div>
             </div>
