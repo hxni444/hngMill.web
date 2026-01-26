@@ -113,3 +113,26 @@
         grid-template-columns: 1fr;
     }
 }
+
+.location-section {
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.location-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-dark, #1f2937);
+}
+
+.map-container {
+    padding: 1rem;
+    overflow: hidden;
+    height: 400px;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}

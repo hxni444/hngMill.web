@@ -61,6 +61,22 @@ const About = () => {
                     our commitment to excellence is unyielding.
                 </p>
             </div>
+
+            <div className="location-section">
+                <h2>Visit Us</h2>
+                <div className="glass-panel map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3906.891459459767!2d75.680073!3d11.7020995!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba680269cc1680f%3A0x33aa4718e1eaf26b!2sH%26G%20Flour%20Mill!5e0!3m2!1sen!2sin!4v1769449328855!5m2!1sen!2sin"
+                        width="100%"
+                        height="450"
+                        style={{ border: 0 }}
+                        allowFullScreen=""
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="H&G Flour Mill Location"
+                    ></iframe>
+                </div>
+            </div>
         </div>
     );
 };
