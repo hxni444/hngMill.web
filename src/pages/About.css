@@ -1,0 +1,115 @@
+.about-container {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: var(--text-color);
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.about-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-header .subtitle {
+    font-size: 1.2rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.process-card {
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid var(--primary-color);
+}
+
+.process-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.step-number {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    font-size: 5rem;
+    font-weight: 900;
+    color: rgba(var(--primary-rgb, 37, 99, 235), 0.05);
+    /* Fallback or variable */
+    z-index: 0;
+    font-family: sans-serif;
+}
+
+.process-card h2 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.process-card .step-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1e293b;
+    /* Dark slate */
+    position: relative;
+    z-index: 1;
+}
+
+.process-card p {
+    line-height: 1.7;
+    color: #475569;
+    position: relative;
+    z-index: 1;
+    font-size: 0.95rem;
+}
+
+.ethos-panel {
+    text-align: center;
+    padding: 3rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.ethos-panel h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.ethos-panel p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #475569;
+}
+
+@media (max-width: 768px) {
+    .about-header h1 {
+        font-size: 2rem;
+    }
+
+    .process-grid {
+        grid-template-columns: 1fr;
+    }
+}

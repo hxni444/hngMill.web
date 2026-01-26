@@ -86,7 +86,12 @@ const Order = () => {
         window.open(url, '_blank');
     };
 
-    if (loading) return <div className="container" style={{ padding: '2rem' }}>Loading fresh products...</div>;
+    if (loading) return (
+        <div className="container loader-container">
+            <div className="mill-loader"></div>
+            <p className="loading-text">Fetching fresh products...</p>
+        </div>
+    );
 
     return (
         <div className="container order-container">

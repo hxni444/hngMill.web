@@ -25,9 +25,7 @@ const Home = () => {
                     <Link to="/order" className="btn btn-primary hero-btn-primary">
                         Order Fresh Products
                     </Link>
-                    <Link to="/estimate" className="btn hero-btn-secondary">
-                        Check Grinding Rates
-                    </Link>
+
                 </div>
             </section>
 
