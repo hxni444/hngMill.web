@@ -154,9 +154,9 @@ const Order = () => {
 
 const ProductCard = ({ product, onAdd, image }) => {
     const [weight, setWeight] = useState(1); // Default 1kg
-    // User requested: if stock_out is false, it implies stock out. 
-    // Checking for false, 'false', 0, or '0' to be safe.
-    const isStockOut = product.stock_out == false || product.stock_out === 'false' || parseInt(product.stock_out) === 0;
+    // User requested correction: if stock_out is true, it implies stock out.
+    // Checking for true, 'true', 1, or '1'.
+    const isStockOut = product.stock_out === true || product.stock_out === 'true' || parseInt(product.stock_out) === 1;
 
     return (
         <div className={`glass-panel product-card ${isStockOut ? 'stock-out' : ''}`}>
