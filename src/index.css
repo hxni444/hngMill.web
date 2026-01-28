@@ -156,14 +156,28 @@ h2 {
 
   /* Mobile adjustments for product images */
   .product-image-container {
-    height: 200px !important;
-    margin: -1.5rem -1.5rem 0.8rem -1.5rem !important;
+    height: 120px !important;
+    margin: -0.8rem -0.8rem 0.5rem -0.8rem !important;
+    /* Matches new 0.8rem padding */
   }
 }
 
 /* Product Card Image Styles */
 .product-image-container {
   height: 160px;
+  /* Default large padding was 1.5rem, but we overrode it in Order.css to 0.8rem, 
+     however that override is local to class. 
+     To be safe, let's keep this general but override in Order.css if needed. 
+     Actually, better to align this global style if it's reused, 
+     or just override in Order.css. 
+     Let's modify Order.css to override this specific margin for ProductCard 
+     instead of changing global index.css which might affect Home.
+     WAIT: Home page uses FeatureCard, OrderPage uses ProductCard.
+     Let's check if Home page uses .product-image-container. No, Home uses .feature-card.
+     So safe to change? Check Order.jsx usage.
+     Yes.
+     Let's update here to be responsive to the container padding.
+  */
   margin: -1.5rem -1.5rem 1rem -1.5rem;
   overflow: hidden;
   position: relative;
