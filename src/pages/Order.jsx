@@ -101,7 +101,7 @@ const Order = () => {
                         navigator.share({
                             files: [file],
                             title: 'H&G Flour Mill Order',
-                            text: 'Please find my order details attached.',
+                            text: 'Hi, I would like to oder these items',
                         }).catch((err) => console.log('Share failed/cancelled', err));
                     } else {
                         // Fallback: Download
@@ -113,7 +113,7 @@ const Order = () => {
 
                         // Open WhatsApp
                         const total = calculateTotal();
-                        const message = `*Hi, I have downloaded my order bill. Total: ₹${total.toFixed(0)}*`;
+                        const message = `*Hi, I would like to oder these items. Total: ₹${total.toFixed(0)}*`;
                         const url = `https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
                         window.open(url, '_blank');
                     }
@@ -225,6 +225,11 @@ const ProductCard = ({ product, onAdd, image }) => {
         // Convert to kg if g is selected
         if (unit === 'g') {
             weight = weight / 1000;
+        }
+
+        if (weight < 0.25) {
+            alert("min Oder 250 g");
+            return;
         }
 
         onAdd(product, weight);
