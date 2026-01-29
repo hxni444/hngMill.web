@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import html2canvas from 'html2canvas';
+
 import axiosClient from '../api/axiosClient';
 import turmericImg from '../assets/Turmeric.jpg';
 import corianderImg from '../assets/Coriander.jpg';
@@ -17,7 +17,7 @@ const Order = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
     const [loading, setLoading] = useState(true);
-    const billRef = useRef(null);
+
 
     useEffect(() => {
         axiosClient.get('/products')
@@ -82,56 +82,64 @@ const Order = () => {
         }, 0);
     };
 
-    const handleShare = async () => {
+    const handleShare = () => {
         if (!cart.length) return;
 
-        try {
-            if (billRef.current) {
-                // Temporarily make visible for capture
-                billRef.current.style.display = 'block';
-                const canvas = await html2canvas(billRef.current, { backgroundColor: '#ffffff', scale: 2 });
-                billRef.current.style.display = 'none';
+        const total = calculateTotal();
+        const date = new Date().toLocaleDateString();
+        const time = new Date().toLocaleTimeString();
 
-                // Convert to blob/image
-                canvas.toBlob((blob) => {
-                    const file = new File([blob], "order_bill.png", { type: "image/png" });
+        let message = `*H&G Flour Mill - Order Bill*\n`;
+        message += `${date} at ${time}\n`;
+        message += `------------------------------\n`;
 
-                    // Web Share API (Mobile)
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        navigator.share({
-                            files: [file],
-                            title: 'H&G Flour Mill Order',
-                            text: 'Hi, I would like to oder these items',
-                        }).catch((err) => console.log('Share failed/cancelled', err));
-                    } else {
-                        // Fallback: Download
-                        const link = document.createElement('a');
-                        link.download = 'HG_Order_Bill.png';
-                        link.href = canvas.toDataURL();
-                        link.click();
-                        alert("Bill image downloaded! Please attach it to WhatsApp.");
+        // Using code block for alignment in WhatsApp
+        message += `\`\`\`\n`;
+        message += `ITEM           QTY     AMT\n`;
+        message += `------------------------------\n`;
 
-                        // Open WhatsApp
-                        const total = calculateTotal();
-                        const message = `*Hi, I would like to oder these items. Total: ₹${total.toFixed(0)}*`;
-                        const url = `https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-                        window.open(url, '_blank');
-                    }
-                });
+        cart.forEach(item => {
+            // Truncate name if too long to keep alignment
+            let name = item.name.substring(0, 12).padEnd(14, ' ');
+            let qty = `${item.qty}x${formatWeight(item.weight)}`.padStart(8, ' '); // e.g. " 1x500g" or " 2x1kg"
+            // Adjust qty formatting to be concise
+            let weightStr = formatWeight(item.weight);
+            // e.g. "1kg" or "500g"
+
+            // Format: "Name  1x1kg  100"
+            // Let's try to fit closely
+            // Name: 12 chars
+            // Qty: 8 chars
+            // Price: rest
+
+            let linePrice = (item.price * item.weight * item.qty).toFixed(0);
+            let priceStr = `₹${linePrice}`.padStart(5, ' ');
+
+            // Re-formatting for better fit
+            // Turmeric      1x1kg    ₹200
+
+            name = item.name.substring(0, 13).padEnd(14, ' ');
+
+            // Combine qty and weight: 1 x 1kg
+            let qtyWeight = `${item.qty} x ${weightStr}`;
+            if (qtyWeight.length > 9) {
+                // compact if long
+                qtyWeight = `${item.qty}x${weightStr}`;
             }
-        } catch (error) {
-            console.error("Error generating bill:", error);
-            alert("Could not generate bill image. Falling back to text share.");
-            // Fallback to text share
-            const total = calculateTotal();
-            let message = `*Hi, I would like to order the following products:*\n\n`;
-            cart.forEach(item => {
-                message += `• ${item.name} (${formatWeight(item.weight)}) x ${item.qty} = ₹${(item.price * item.weight * item.qty).toFixed(0)}\n`;
-            });
-            message += `\n*Total Estimate: ₹${total.toFixed(0)}*`;
-            const url = `https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-        }
+            let qtyCol = qtyWeight.padStart(10, ' ');
+
+            message += `${name}${qtyCol}${priceStr}\n`;
+        });
+
+        message += `------------------------------\n`;
+        message += `TOTAL:`.padEnd(24, ' ') + `₹${total.toFixed(0)}\n`;
+        message += `\`\`\`\n`;
+        message += `------------------------------\n`;
+        message += `*Grand Total: ₹${total.toFixed(0)}*\n`;
+        message += `\nHi, I would like to order these items.`;
+
+        const url = `https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
     };
 
     if (loading) return (
@@ -197,15 +205,13 @@ const Order = () => {
                     </div>
 
                     <button onClick={handleShare} className="btn btn-primary share-btn">
-                        Get Bill & Share
+                        Send Order to WhatsApp
                     </button>
                 </div>
             )}
 
-            {/* Hidden Bill Component for Capture */}
-            <div ref={billRef} style={{ display: 'none', position: 'absolute', top: '-9999px', left: '-9999px', width: '400px', background: 'white', padding: '20px' }}>
-                <BillReceipt cart={cart} total={calculateTotal()} formatWeight={formatWeight} />
-            </div>
+
+
         </div>
     );
 };
@@ -287,66 +293,5 @@ const ProductCard = ({ product, onAdd, image }) => {
         </div>
     );
 };
-
-const BillReceipt = ({ cart, total, formatWeight }) => (
-    <div className="bill-receipt" style={{
-        fontFamily: '"Courier New", Courier, monospace',
-        padding: '30px',
-        backgroundColor: '#fffdf8', // Slight tint for paper feel
-        border: '1px solid #e5e7eb',
-        backgroundImage: 'repeating-linear-gradient(#fffdf8 0px, #fffdf8 24px, #e5e7eb 25px)', // Rule lines effect
-        backgroundSize: '100% 25px',
-        color: '#333'
-    }}>
-        <div className="bill-header" style={{ textAlign: 'center', marginBottom: '20px', backgroundColor: 'rgba(255,255,255,0.9)', padding: '10px' }}>
-            <h2 style={{ color: '#059669', fontSize: '24px', margin: 0, textTransform: 'uppercase', letterSpacing: '1px' }}>H&G Flour Mill</h2>
-            <p style={{ fontSize: '14px', margin: '5px 0', fontWeight: 'bold', textTransform: 'uppercase', color: '#555' }}>Digital Order</p>
-            <p style={{ fontSize: '12px', color: '#666' }}>Premium Quality Food Products</p>
-            <div style={{ borderTop: '2px dashed #333', marginTop: '15px' }}></div>
-        </div>
-
-        <div style={{ backgroundColor: 'rgba(255,255,255,0.95)', padding: '15px', border: '2px solid #333' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px', fontSize: '12px' }}>
-                <span>Date: {new Date().toLocaleDateString()}</span>
-                <span>Time: {new Date().toLocaleTimeString()}</span>
-            </div>
-
-            <table className="bill-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                    <tr style={{ borderBottom: '2px solid #333' }}>
-                        <th style={{ padding: '8px 0', textAlign: 'left', textTransform: 'uppercase', fontSize: '12px' }}>Item</th>
-                        <th style={{ padding: '8px 0', textAlign: 'right', textTransform: 'uppercase', fontSize: '12px' }}>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {cart.map((item, idx) => (
-                        <tr key={idx} style={{ borderBottom: '1px dashed #ccc' }}>
-                            <td style={{ padding: '12px 0' }}>
-                                <div style={{ fontWeight: 'bold' }}>{item.name}</div>
-                                <div style={{ fontSize: '12px', color: '#555' }}>{formatWeight(item.weight)} x {item.qty}</div>
-                            </td>
-                            <td style={{ padding: '12px 0', textAlign: 'right', verticalAlign: 'top' }}>
-                                ₹{(item.price * item.weight * item.qty).toFixed(2)}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-                <tfoot>
-                    <tr style={{ borderTop: '2px solid #333' }}>
-                        <td style={{ padding: '15px 0', fontWeight: 'bold', fontSize: '18px' }}>TOTAL</td>
-                        <td style={{ padding: '15px 0', fontWeight: 'bold', textAlign: 'right', fontSize: '20px' }}>
-                            ₹{total.toFixed(2)}
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-
-        <div className="bill-footer" style={{ marginTop: '20px', textAlign: 'center', fontSize: '10px', color: '#555', backgroundColor: 'rgba(255,255,255,0.9)', padding: '10px' }}>
-            <p>Thank you for choosing H&G Flour Mill!</p>
-            <p>Contact: {import.meta.env.VITE_FOOTER_PHONE_NUMBER}</p>
-        </div>
-    </div>
-);
 
 export default Order;
