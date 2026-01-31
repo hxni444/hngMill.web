@@ -289,8 +289,9 @@ const ProductCard = ({ product, onAdd, image }) => {
                         onClick={() => setUnit(prev => prev === 'kg' ? 'g' : 'kg')}
                         className="unit-toggle-btn"
                         disabled={isStockOut}
+                        title="Tab to switch unit"
                     >
-                        {unit}
+                        {unit} <span style={{ opacity: 0.6, fontSize: '0.8em' }}>⇄</span>
                     </button>
                 </div>
                 <button

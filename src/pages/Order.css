@@ -117,26 +117,6 @@
         font-size: 0.75rem !important;
     }
 
-    /* Force inputs to be tiny */
-    .weight-input,
-    .unit-toggle-btn,
-    .add-btn {
-        padding: 0.2rem !important;
-        font-size: 0.7rem !important;
-        height: auto !important;
-    }
-
-    .weight-entry-container {
-        gap: 0.2rem !important;
-    }
-
-    .weight-input-group {
-        gap: 0 !important;
-        flex-direction: row !important;
-        /* Keep as row for merged look */
-        height: auto !important;
-    }
-
     /* Adjust image height for 3 columns */
     .product-card .product-image-container {
         /* height: 60px !important; REMOVED to allow square aspect ratio */
@@ -216,22 +196,21 @@
 /* Merged Input Group */
 .weight-input-group {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     border: 1px solid #ddd;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.8);
     overflow: hidden;
     /* Ensure children don't overflow corners */
-    padding-right: 2px;
-    /* Slight padding for the button */
+    padding-right: 0;
 }
 
 .weight-input {
     flex: 1;
-    padding: 0.5rem;
+    padding: 0.6rem;
     border: none !important;
     background: transparent !important;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     width: 100%;
     outline: none;
 }
@@ -242,11 +221,12 @@
 
 .unit-toggle-btn {
     flex: 0 0 auto;
-    padding: 0.3rem 0.6rem;
-    margin: 2px;
+    padding: 0.6rem 0.8rem;
+    margin: 0;
     border: none;
-    border-radius: 6px;
-    font-size: 0.8rem;
+    border-radius: 0;
+    /* Flush with edge */
+    font-size: 0.9rem;
     background: #e2e8f0;
     color: #334155;
     cursor: pointer;
@@ -274,7 +254,7 @@
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
 /* Cart Panel */
