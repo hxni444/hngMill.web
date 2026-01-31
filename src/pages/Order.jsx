@@ -85,6 +85,14 @@ const Order = () => {
     const handleShare = () => {
         if (!cart.length) return;
 
+        // Calculate total weight of the cart
+        const totalWeight = cart.reduce((sum, item) => sum + (item.weight * item.qty), 0);
+
+        if (totalWeight < 0.25) {
+            alert("Total order weight must be at least 250g to place an order.");
+            return;
+        }
+
         const total = calculateTotal();
         const date = new Date().toLocaleDateString();
         const time = new Date().toLocaleTimeString();
@@ -191,7 +199,7 @@ const Order = () => {
                     <div className="cart-header">
                         <h3 className="cart-title">Cart ({cart.length})</h3>
                         <span className="cart-total">
-                            ₹{calculateTotal().toFixed(0)}
+                            Total : ₹{calculateTotal().toFixed(0)}
                         </span>
                     </div>
 
@@ -233,8 +241,10 @@ const ProductCard = ({ product, onAdd, image }) => {
             weight = weight / 1000;
         }
 
-        if (weight < 0.25) {
-            alert("min Oder 250 g");
+        // Strict 100g minimum check
+        // 100g = 0.1kg
+        if (weight < 0.1) {
+            alert("Min product order is 100g");
             return;
         }
 
