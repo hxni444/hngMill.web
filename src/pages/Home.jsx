@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import WelcomePopup from '../components/WelcomePopup';
 
 import './Home.css';
 
@@ -11,6 +12,9 @@ const Home = () => {
                 <title>Home - H&G Flour Mill | Fresh Spices & Flour</title>
                 <meta name="description" content="Welcome to H&G Flour Mill. Purest grains and finest flour, fresh from the mill. Order turmeric, chilli, coriander and more online." />
             </Helmet>
+
+            <WelcomePopup />
+
             {/* Hero Section */}
             <section className="hero-section">
                 <h1 className="hero-title">
