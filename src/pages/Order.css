@@ -125,10 +125,13 @@
     }
 
     .stock-out-badge {
-        padding: 1px 3px;
-        font-size: 0.5rem;
-        top: 2px;
-        right: 2px;
+        padding: 0.3rem 0.8rem;
+        font-size: 0.7rem;
+        border-width: 1px;
+        top: 40%;
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -50%) rotate(-10deg);
     }
 }
 
@@ -152,6 +155,8 @@
     width: calc(100% + 1.6rem);
     /* Full width */
     aspect-ratio: 1;
+    position: relative;
+    /* Established context for badge */
 }
 
 .product-image {
@@ -160,16 +165,27 @@
     object-fit: cover;
 }
 
-.product-card.stock-out {
-    opacity: 0.7;
+.product-card.stock-out .product-image {
+    filter: grayscale(100%);
+    opacity: 0.6;
 }
 
 .stock-out-badge {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    padding: 2px 6px;
-    font-size: 0.7rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    background-color: #dc2626;
+    color: white;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border: 2px solid white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+    white-space: nowrap;
+    letter-spacing: 1px;
 }
 
 .product-info h3 {
@@ -185,12 +201,46 @@
     font-size: 0.9rem;
 }
 
+.product-name-ml {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 0.2rem;
+    font-family: 'Mukta', sans-serif;
+    /* Example font if available, else fallback */
+}
+
+.product-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.more-link {
+    font-size: 0.8rem;
+    color: var(--color-primary);
+    text-decoration: underline;
+    cursor: pointer;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.more-link:hover {
+    color: var(--color-accent);
+}
+
 /* Weight Entry Inputs */
 .weight-entry-container {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     margin-top: auto;
+}
+
+.weight-entry-container.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(1);
 }
 
 /* Merged Input Group */
@@ -255,6 +305,15 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 0.95rem;
+    color: white;
+    /* Enforce white text */
+}
+
+.add-btn:disabled {
+    background-color: #cbd5e1;
+    color: #64748b;
+    cursor: not-allowed;
+    border: 1px solid #cbd5e1;
 }
 
 /* Cart Panel */

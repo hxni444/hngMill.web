@@ -10,8 +10,10 @@ import kashmiriImg from '../assets/kashmiri.jpg';
 import pathilImg from '../assets/pathil.jpg';
 import puttImg from '../assets/putt.jpg';
 import wheatImg from '../assets/wheat.jpg';
-
+import CoconutOilImg from '../assets/Coconut Oil.jpg'
 import './Order.css';
+import { getMalayalamName } from '../locales/productTranslations';
+import ProductDetailsModal from '../components/ProductDetailsModal';
 
 const Order = () => {
     const [products, setProducts] = useState([]);
@@ -26,17 +28,23 @@ const Order = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    const formatWeight = (weightInKg) => {
+    const formatWeight = (weightInKg, name = "") => {
+        const isLiquid = name.toLowerCase().includes('oil');
+        const suffix = isLiquid ? 'L' : 'kg';
+        const subSuffix = isLiquid ? 'ml' : 'g';
+
         if (weightInKg < 1) {
-            return `${(weightInKg * 1000).toFixed(0)}g`;
+            return `${(weightInKg * 1000).toFixed(0)}${subSuffix}`;
         }
-        return `${weightInKg}kg`;
+        return `${weightInKg}${suffix}`;
     };
 
     const addToCart = (product, weightInKg) => {
         // Determine max limit for this product
         const name = product.name.toLowerCase();
         let limit = parseFloat(import.meta.env.VITE_LIMIT_DEFAULT) || 10;
+        const isLiquid = name.includes('oil');
+        const unitLabel = isLiquid ? 'L' : 'kg';
 
         if (name.includes('turmeric')) limit = parseFloat(import.meta.env.VITE_LIMIT_TURMERIC) || 10;
         else if (name.includes('kashmiri')) limit = parseFloat(import.meta.env.VITE_LIMIT_KASHMIRI) || 10;
@@ -46,6 +54,7 @@ const Order = () => {
         else if (name.includes('wheat')) limit = parseFloat(import.meta.env.VITE_LIMIT_WHEAT) || 10;
         else if (name.includes('putt')) limit = parseFloat(import.meta.env.VITE_LIMIT_RICE_PUTT) || 10;
         else if (name.includes('pathil')) limit = parseFloat(import.meta.env.VITE_LIMIT_RICE_PATHIL) || 10;
+        // Add specific limit for oil if needed, defaulting to 10 for now
 
         // Calculate current total weight for this product
         const currentWeightInCart = cart.reduce((total, item) => {
@@ -53,7 +62,7 @@ const Order = () => {
         }, 0);
 
         if (currentWeightInCart + weightInKg > limit) {
-            alert(`Ordering is limited to ${limit}kg per item for ${product.name}\nPlease visit the mill for large ordering`);
+            alert(`Ordering is limited to ${limit}${unitLabel} per item for ${product.name}\nPlease visit the mill for large ordering`);
             return;
         }
 
@@ -77,7 +86,7 @@ const Order = () => {
 
     const calculateTotal = () => {
         return cart.reduce((total, item) => {
-            // Assuming price is per KG and weight is in KG
+            // Assuming price is per KG/L and weight is in KG/L
             return total + (parseFloat(item.price) * parseFloat(item.weight) * item.qty);
         }, 0);
     };
@@ -89,7 +98,7 @@ const Order = () => {
         const totalWeight = cart.reduce((sum, item) => sum + (item.weight * item.qty), 0);
 
         if (totalWeight < 0.25) {
-            alert("Total order weight must be at least 250g to place an order.");
+            alert("Total order quantity must be at least 250g/250ml to place an order.");
             return;
         }
 
@@ -109,9 +118,9 @@ const Order = () => {
         cart.forEach(item => {
             // Truncate name if too long to keep alignment
             let name = item.name.substring(0, 12).padEnd(14, ' ');
-            let qty = `${item.qty}x${formatWeight(item.weight)}`.padStart(8, ' '); // e.g. " 1x500g" or " 2x1kg"
+            let qty = `${item.qty}x${formatWeight(item.weight, item.name)}`.padStart(8, ' ');
             // Adjust qty formatting to be concise
-            let weightStr = formatWeight(item.weight);
+            let weightStr = formatWeight(item.weight, item.name);
             // e.g. "1kg" or "500g"
 
             // Format: "Name  1x1kg  100"
@@ -181,6 +190,7 @@ const Order = () => {
                     else if (name.includes('wheat')) productImg = wheatImg;
                     else if (name.includes('putt')) productImg = puttImg;
                     else if (name.includes('pathil')) productImg = pathilImg;
+                    else if (name.includes('oil')) productImg = CoconutOilImg;
 
                     return (
                         <ProductCard
@@ -206,7 +216,7 @@ const Order = () => {
                     <div className="cart-items">
                         {cart.map((item, idx) => (
                             <div key={idx} className="cart-item">
-                                <span>{item.name} ({formatWeight(item.weight)}) x {item.qty}</span>
+                                <span>{item.name} ({formatWeight(item.weight, item.name)}) x {item.qty}</span>
                                 <span className="remove-btn" onClick={() => removeFromCart(idx)}>✕</span>
                             </div>
                         ))}
@@ -228,23 +238,28 @@ const ProductCard = ({ product, onAdd, image }) => {
     // User requested correction: if stock_out is true, it implies stock out.
     // Checking for true, 'true', 1, or '1'.
     const isStockOut = product.stock_out === true || product.stock_out === 'true' || parseInt(product.stock_out) === 1;
+    const isLiquid = product.name.toLowerCase().includes('oil');
 
+    // Initial unit: if liquid, default to 'L'
     const [weightInput, setWeightInput] = useState("");
-    const [unit, setUnit] = useState("kg");
+    const [unit, setUnit] = useState(isLiquid ? "L" : "kg");
+    const [showDetails, setShowDetails] = useState(false);
+
+    const malayalamName = getMalayalamName(product.name);
 
     const handleAdd = () => {
         let weight = parseFloat(weightInput);
         if (!weight || weight <= 0) return;
 
-        // Convert to kg if g is selected
-        if (unit === 'g') {
+        // Convert to kg/L if g/ml is selected
+        if (unit === 'g' || unit === 'ml') {
             weight = weight / 1000;
         }
 
-        // Strict 100g minimum check
+        // Strict 100g/100ml minimum check
         // 100g = 0.1kg
         if (weight < 0.1) {
-            alert("Min product order is 100g");
+            alert(`Min product order is 100${isLiquid ? 'ml' : 'g'}`);
             return;
         }
 
@@ -252,56 +267,100 @@ const ProductCard = ({ product, onAdd, image }) => {
         setWeightInput(""); // Reset
     };
 
+    // Toggle Logic
+    const toggleUnit = () => {
+        if (isLiquid) {
+            setUnit(prev => prev === 'L' ? 'ml' : 'L');
+        } else {
+            setUnit(prev => prev === 'kg' ? 'g' : 'kg');
+        }
+    };
+
+    // Price display logic
+    const priceDisplay = parseFloat(product.price) === 0 ? 'xxx' : product.price;
+
     return (
-        <div className={`glass-panel product-card ${isStockOut ? 'stock-out' : ''}`}>
-            {image && (
-                <div className="product-image-container">
-                    <img
-                        src={image}
-                        alt={product.name}
-                        className="product-image"
-                    />
+        <>
+            <div className={`glass-panel product-card ${isStockOut ? 'stock-out' : ''}`}>
+                <div onClick={() => setShowDetails(true)} style={{ cursor: 'pointer' }}>
+                    {image && (
+                        <div className="product-image-container">
+                            <img
+                                src={image}
+                                alt={product.name}
+                                className="product-image"
+                            />
+                            {isStockOut && (
+                                <div className="stock-out-badge">
+                                    Out of Stock
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {!image && isStockOut && (
+                        <div className="stock-out-badge" style={{ position: 'static', transform: 'none', margin: '1rem auto' }}>
+                            Out of Stock
+                        </div>
+                    )}
+
+                    <div className="product-info">
+                        <div className="product-header-row">
+                            <h3>{product.name}</h3>
+                            <span
+                                className="more-link"
+                                onClick={(e) => { e.stopPropagation(); setShowDetails(true); }}
+                            >
+                                More
+                            </span>
+                        </div>
+                        {malayalamName && <p className="product-name-ml">{malayalamName}</p>}
+                        <p className="product-price">
+                            {typeof priceDisplay === 'number' ? `₹${priceDisplay}` : `₹${priceDisplay}`}
+                            <span style={{ color: '#666', fontWeight: 'normal', fontSize: '0.8em' }}> / {isLiquid ? 'L' : 'kg'}</span>
+                        </p>
+                    </div>
                 </div>
-            )}
 
-            {isStockOut && (
-                <div className="stock-out-badge">
-                    Out of Stock
-                </div>
-            )}
+                <div className={`weight-entry-container ${isStockOut ? 'disabled' : ''}`}>
+                    <div className="weight-input-group">
+                        <input
+                            type="number"
+                            value={weightInput}
+                            onChange={(e) => setWeightInput(e.target.value)}
+                            placeholder="Qty"
+                            className="weight-input"
+                            disabled={isStockOut}
+                        />
+                        <button
+                            onClick={toggleUnit}
+                            className="unit-toggle-btn"
+                            disabled={isStockOut}
+                            title="Tab to switch unit"
+                        >
+                            {unit} <span style={{ opacity: 0.6, fontSize: '0.8em' }}>⇄</span>
+                        </button>
+                    </div>
 
-            <div className="product-info">
-                <h3>{product.name}</h3>
-                <p className="product-price">₹{product.price} / kg</p>
-            </div>
-
-            <div className={`weight-entry-container ${isStockOut ? 'disabled' : ''}`}>
-                <div className="weight-input-group">
-                    <input
-                        type="number"
-                        value={weightInput}
-                        onChange={(e) => setWeightInput(e.target.value)}
-                        placeholder="Qty"
-                        className="weight-input"
-                        disabled={isStockOut}
-                    />
                     <button
-                        onClick={() => setUnit(prev => prev === 'kg' ? 'g' : 'kg')}
-                        className="unit-toggle-btn"
+                        onClick={handleAdd}
+                        className="btn btn-primary add-btn"
                         disabled={isStockOut}
-                        title="Tab to switch unit"
                     >
-                        {unit} <span style={{ opacity: 0.6, fontSize: '0.8em' }}>⇄</span>
+                        ADD
                     </button>
                 </div>
-                <button
-                    onClick={handleAdd}
-                    className="btn btn-primary add-btn"
-                    disabled={isStockOut || !weightInput}>
-                    ADD
-                </button>
             </div>
-        </div>
+
+            {showDetails && (
+                <ProductDetailsModal
+                    product={product}
+                    image={image}
+                    malayalamName={malayalamName}
+                    onClose={() => setShowDetails(false)}
+                />
+            )}
+        </>
     );
 };
 
