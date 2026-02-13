@@ -5,17 +5,17 @@ export const productTranslations = {
     "Kashmiri Chilli Powder": "കാശ്മീരി മുളക് പൊടി",
     "Wheat Powder": "ഗോതമ്പ് പൊടി",
     "Rice Puttu Powder": "അരി പുട്ട് പൊടി",
-    "Rice Pathil Powder": "അരി പത്തിരി പൊടി",
+    "Rice Powder": "അരി പത്തിൽ പൊടി",
     "Roasted Coriander Powder": "വറുത്ത മല്ലി പൊടി",
     "Coconut Oil": "വെളിച്ചെണ്ണ",
     // Add partial matches or keywords if exact match fails
-    "Turmeric": "മഞ്ഞൾ",
-    "Coriander": "മല്ലി",
-    "Chilli": "മുളക്",
+    "Turmeric": "മഞ്ഞൾ പൊടി",
+    "Coriander": "മല്ലി പൊടി",
+    "Chilli": "മുളക് പൊടി",
     "Kashmiri": "കാശ്മീരി മുളക് പൊടി",
-    "Wheat": "ഗോതമ്പ്",
-    "Putt": "പുട്ട്",
-    "Pathil": "പത്തിരി",
+    "Wheat": "ഗോതമ്പ് പൊടി",
+    "Putt": "അരി പുട്ട് പൊടി",
+    "Rice Powder": "അരി പത്തിൽ പൊടി",
     "Oil": "വെളിച്ചെണ്ണ"
 };
 

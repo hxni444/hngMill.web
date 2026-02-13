@@ -7,7 +7,7 @@ import corianderImg from '../assets/Coriander.jpg';
 import corianderRoastedImg from '../assets/Coriander_Roasted.jpg';
 import chilliImg from '../assets/chilli.png';
 import kashmiriImg from '../assets/kashmiri.jpg';
-import pathilImg from '../assets/pathil.jpg';
+import pathilImg from '../assets/Rice Powder.jpg';
 import puttImg from '../assets/putt.jpg';
 import wheatImg from '../assets/wheat.jpg';
 import CoconutOilImg from '../assets/Coconut Oil.jpg'
@@ -53,7 +53,7 @@ const Order = () => {
         else if (name.includes('coriander')) limit = parseFloat(import.meta.env.VITE_LIMIT_CORIANDER) || 10;
         else if (name.includes('wheat')) limit = parseFloat(import.meta.env.VITE_LIMIT_WHEAT) || 10;
         else if (name.includes('putt')) limit = parseFloat(import.meta.env.VITE_LIMIT_RICE_PUTT) || 10;
-        else if (name.includes('pathil')) limit = parseFloat(import.meta.env.VITE_LIMIT_RICE_PATHIL) || 10;
+        else if (name.includes('rice powder')) limit = parseFloat(import.meta.env.VITE_LIMIT_RICE_PATHIL) || 10;
         // Add specific limit for oil if needed, defaulting to 10 for now
 
         // Calculate current total weight for this product
@@ -189,7 +189,7 @@ const Order = () => {
                     else if (name.includes('turmeric')) productImg = turmericImg;
                     else if (name.includes('wheat')) productImg = wheatImg;
                     else if (name.includes('putt')) productImg = puttImg;
-                    else if (name.includes('pathil')) productImg = pathilImg;
+                    else if (name.includes('rice powder')) productImg = pathilImg;
                     else if (name.includes('oil')) productImg = CoconutOilImg;
 
                     return (

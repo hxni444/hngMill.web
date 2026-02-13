@@ -1,5 +1,6 @@
 import React from 'react';
 import './ProductDetailsModal.css';
+import { Link } from 'react-router-dom';
 
 const ProductDetailsModal = ({ product, image, malayalamName, onClose }) => {
     if (!product) return null;
@@ -20,7 +21,7 @@ const ProductDetailsModal = ({ product, image, malayalamName, onClose }) => {
             "Zero additives or heating.",
             "Natural aroma and authentic taste."
         ];
-    } else if (product.name.toLowerCase().includes('putt') || product.name.toLowerCase().includes('pathil')) {
+    } else if (product.name.toLowerCase().includes('putt') || product.name.toLowerCase().includes('rice')) {
         descriptions = [
             "Premium Rice carefully selected.",
             "Perfectly roasted for soft texture.",
@@ -30,6 +31,8 @@ const ProductDetailsModal = ({ product, image, malayalamName, onClose }) => {
     }
 
     const isLiquid = product.name.toLowerCase().includes('oil');
+    // Ensure it strictly matches Rice Powder and excludes Puttu
+    const isRice = product.name.toLowerCase().includes('rice powder') && !product.name.toLowerCase().includes('putt');
     const displayPrice = parseFloat(product.price) === 0 ? 'xxx' : product.price;
 
     return (
@@ -66,6 +69,12 @@ const ProductDetailsModal = ({ product, image, malayalamName, onClose }) => {
                             Our {product.name.toLowerCase()} is processed with
                             the highest standards of purity and care.
                         </p>
+
+                        {isRice && (
+                            <Link to="/cooking-guide/rice-powder" className="btn btn-secondary" style={{ width: '100%', marginTop: '1rem', textAlign: 'center' }}>
+                                View Cooking Guide 👨‍🍳
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>

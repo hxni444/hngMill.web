@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Order from './pages/Order';
 import About from './pages/About';
+import CookingGuide from './pages/CookingGuide';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path="order" element={<Order />} />
           <Route path="about" element={<About />} />
+          <Route path="about" element={<About />} />
+          <Route path="cooking-guide/rice-powder" element={<CookingGuide />} />
           {/* <Route path="estimate" element={<Estimate />} /> */}
         </Route>
       </Routes>
